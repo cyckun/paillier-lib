@@ -81,26 +81,27 @@ static int test_paillier(int verbose) {
 
   /* encrypt and ciphertext addition */
   double start_time = get_wall_time();
-
-  for (int count = 0; count < 1; count++) {
-  	if (!paillier.PAILLIER_encrypt(c1, m1, key)) {
-    		return -1;
-    		}
-  }
-  // double end_time = get_wall_time(); 
-  // std::cout<<"循环耗时为:"<<end_time-start_time<<"ms" << std::endl;
-  // }
-  if (!paillier.PAILLIER_encrypt(c2, m2, key)) {
-    return -1;
-  }
-  if (!paillier.PAILLIER_ciphertext_add(c3, c1, c2, key)) {
-    return -1;
-  }
-  if (!paillier.PAILLIER_decrypt(m3, c3, key)) {
-    return -1;
+  for (int ct = 0; ct < 1000; ct++) {
+    for (int count = 0; count < 1; count++) {
+      if (!paillier.PAILLIER_encrypt(c1, m1, key)) {
+          return -1;
+      }
+    }
+    // double end_time = get_wall_time(); 
+    // std::cout<<"循环耗时为:"<<end_time-start_time<<"ms" << std::endl;
+    // }
+    if (!paillier.PAILLIER_encrypt(c2, m2, key)) {
+      return -1;
+    }
+    if (!paillier.PAILLIER_ciphertext_add(c3, c1, c2, key)) {
+      return -1;
+    }
+    if (!paillier.PAILLIER_decrypt(m3, c3, key)) {
+      return -1;
+    }
   }
   double end_time = get_wall_time();
-  std::cout<<"耗时为:"<<end_time-start_time<<"ms" << std::endl;
+  std::cout<< "耗时为:" << end_time-start_time << " s" << std::endl;
 
   /* convert plaintext to scalar value */
   BN_bn2bin(m3, buffer);
